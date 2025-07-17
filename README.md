@@ -1,3 +1,6 @@
+# ATTENTION - THIS IS A FORK THAT I'M JUST PLAYING AROUND WITH FOR FUN - I AM NOT A REAL CODER - I'M PLAYING AROUND WITH AI TOOLS
+
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="resources/images/OpenFrontLogoDark.svg">
