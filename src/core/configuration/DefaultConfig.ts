@@ -534,6 +534,16 @@ export class DefaultConfig implements Config {
           territoryBound: false,
           experimental: true,
         };
+      case UnitType.Spy:
+        return {
+          cost: () => 100000n,
+          territoryBound: false,
+        };
+      case UnitType.Satellite:
+        return {
+          cost: () => 500000n,
+          territoryBound: false,
+        };
       default:
         assertNever(type);
     }
