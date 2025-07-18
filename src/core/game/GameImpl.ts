@@ -32,6 +32,7 @@ import {
 } from "./Game";
 import { GameMap, TileRef, TileUpdate } from "./GameMap";
 import { GameUpdate, GameUpdateType } from "./GameUpdates";
+import { IntelAsset, IntelReport } from "./Intel";
 import { PlayerImpl } from "./PlayerImpl";
 import { RailNetwork } from "./RailNetwork";
 import { createRailNetwork } from "./RailNetworkImpl";
@@ -220,6 +221,21 @@ export class GameImpl implements Game {
 
   unitInfo(type: UnitType): UnitInfo {
     return this.config().unitInfo(type);
+  }
+
+  defenseIntel(target: Player): IntelReport {
+    const defenseUnits = target.units(
+      UnitType.DefensePost,
+      UnitType.SAMLauncher,
+      UnitType.MissileSilo,
+      UnitType.Port,
+      UnitType.Factory,
+    );
+    const assets: IntelAsset[] = defenseUnits.map((u) => ({
+      tile: u.tile(),
+      type: u.type(),
+    }));
+    return { target: target.id(), assets };
   }
 
   nations(): Nation[] {

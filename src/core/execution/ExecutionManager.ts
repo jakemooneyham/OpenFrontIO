@@ -15,6 +15,7 @@ import { DonateTroopsExecution } from "./DonateTroopExecution";
 import { EmbargoExecution } from "./EmbargoExecution";
 import { EmojiExecution } from "./EmojiExecution";
 import { FakeHumanExecution } from "./FakeHumanExecution";
+import { GatherDefenseIntelExecution } from "./intel/GatherDefenseIntelExecution";
 import { MarkDisconnectedExecution } from "./MarkDisconnectedExecution";
 import { MoveWarshipExecution } from "./MoveWarshipExecution";
 import { NoOpExecution } from "./NoOpExecution";
@@ -111,6 +112,8 @@ export class Executor {
           intent.unit,
           new Cell(intent.x, intent.y),
         );
+      case "gather_intel":
+        return new GatherDefenseIntelExecution(player, intent.target);
       case "allianceExtension": {
         return new AllianceExtensionExecution(player, intent.recipient);
       }

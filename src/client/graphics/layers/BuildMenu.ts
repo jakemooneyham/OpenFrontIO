@@ -3,9 +3,11 @@ import { customElement, state } from "lit/decorators.js";
 import warshipIcon from "../../../../resources/images/BattleshipIconWhite.svg";
 import cityIcon from "../../../../resources/images/CityIconWhite.svg";
 import factoryIcon from "../../../../resources/images/FactoryIconWhite.svg";
+import focusIcon from "../../../../resources/images/FocusIconWhite.svg";
 import goldCoinIcon from "../../../../resources/images/GoldCoinIcon.svg";
 import mirvIcon from "../../../../resources/images/MIRVIcon.svg";
 import hydrogenBombIcon from "../../../../resources/images/MushroomCloudIconWhite.svg";
+import ninjaIcon from "../../../../resources/images/NinjaIconWhite.svg";
 import atomBombIcon from "../../../../resources/images/NukeIconWhite.svg";
 import portIcon from "../../../../resources/images/PortIcon.svg";
 import shieldIcon from "../../../../resources/images/ShieldIconWhite.svg";
@@ -115,6 +117,20 @@ export const buildTable: BuildItemDisplay[][] = [
       icon: factoryIcon,
       description: "build_menu.desc.factory",
       key: "unit_type.factory",
+      countable: true,
+    },
+    {
+      unitType: UnitType.Spy,
+      icon: ninjaIcon,
+      description: "build_menu.desc.spy",
+      key: "unit_type.spy",
+      countable: true,
+    },
+    {
+      unitType: UnitType.Satellite,
+      icon: focusIcon,
+      description: "build_menu.desc.satellite",
+      key: "unit_type.satellite",
       countable: true,
     },
   ],
