@@ -1,4 +1,5 @@
 import { renderNumber, renderTroops } from "../../client/Utils";
+import { SpyReconExecution } from "../execution/intel/SpyReconExecution";
 import { PseudoRandom } from "../PseudoRandom";
 import { ClientID } from "../Schemas";
 import {
@@ -48,6 +49,7 @@ import {
   GameUpdateType,
   PlayerUpdate,
 } from "./GameUpdates";
+import { IntelReport } from "./Intel";
 import {
   bestShoreDeploymentSource,
   canBuildTransportShip,
@@ -100,6 +102,8 @@ export class PlayerImpl implements Player {
 
   private relations = new Map<Player, number>();
 
+  private intelReports = new Map<PlayerID, IntelReport>();
+
   public _incomingAttacks: Attack[] = [];
   public _outgoingAttacks: Attack[] = [];
   public _outgoingLandAttacks: Attack[] = [];
@@ -121,6 +125,21 @@ export class PlayerImpl implements Player {
     this._gold = 0n;
     this._displayName = this._name; // processName(this._name)
     this._pseudo_random = new PseudoRandom(simpleHash(this.playerInfo.id));
+  }
+
+  gatherDefenseIntel(target: Player): IntelReport {
+    const numIntelUnits =
+      this.unitCount(UnitType.Spy) + this.unitCount(UnitType.Satellite);
+    if (numIntelUnits === 0) {
+      throw new Error("No intel units available");
+    }
+    const report = this.mg.defenseIntel(target);
+    this.intelReports.set(target.id(), report);
+    return report;
+  }
+
+  intelOn(target: Player): IntelReport | undefined {
+    return this.intelReports.get(target.id());
   }
 
   largestClusterBoundingBox: { min: Cell; max: Cell } | null;
@@ -810,6 +829,9 @@ export class PlayerImpl implements Player {
     this.removeTroops("troops" in params ? (params.troops ?? 0) : 0);
     this.mg.addUpdate(b.toUpdate());
     this.mg.addUnit(b);
+    if (type === UnitType.Spy || type === UnitType.Satellite) {
+      this.mg.addExecution(new SpyReconExecution(b));
+    }
 
     return b;
   }
@@ -906,6 +928,9 @@ export class PlayerImpl implements Player {
       case UnitType.TradeShip:
         return this.tradeShipSpawn(targetTile);
       case UnitType.Train:
+        return this.landBasedUnitSpawn(targetTile);
+      case UnitType.Spy:
+      case UnitType.Satellite:
         return this.landBasedUnitSpawn(targetTile);
       case UnitType.MissileSilo:
       case UnitType.DefensePost:

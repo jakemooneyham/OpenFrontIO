@@ -8,6 +8,7 @@ import {
   UnitUpdate,
 } from "./GameUpdates";
 import { PlayerView } from "./GameView";
+import { IntelReport } from "./Intel";
 import { RailNetwork } from "./RailNetwork";
 import { Stats } from "./Stats";
 
@@ -160,6 +161,8 @@ export enum UnitType {
   Construction = "Construction",
   Train = "Train",
   Factory = "Factory",
+  Spy = "Spy",
+  Satellite = "Satellite",
 }
 
 export enum TrainType {
@@ -236,6 +239,10 @@ export interface UnitParamsMap {
   };
 
   [UnitType.Construction]: Record<string, never>;
+
+  [UnitType.Spy]: Record<string, never>;
+
+  [UnitType.Satellite]: Record<string, never>;
 }
 
 // Type helper to get params type for a specific unit type
@@ -610,6 +617,9 @@ export interface Player {
   tradingPorts(port: Unit): Unit[];
   // WARNING: this operation is expensive.
   bestTransportShipSpawn(tile: TileRef): TileRef | false;
+
+  gatherDefenseIntel(target: Player): IntelReport;
+  intelOn(target: Player): IntelReport | undefined;
 }
 
 export interface Game extends GameMap {
@@ -649,6 +659,8 @@ export interface Game extends GameMap {
   units(...types: UnitType[]): Unit[];
   unitCount(type: UnitType): number;
   unitInfo(type: UnitType): UnitInfo;
+
+  defenseIntel(target: Player): IntelReport;
   hasUnitNearby(
     tile: TileRef,
     searchRange: number,
