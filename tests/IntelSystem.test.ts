@@ -1,3 +1,4 @@
+import { GatherDefenseIntelExecution } from "../src/core/execution/intel/GatherDefenseIntelExecution";
 import {
   Game,
   Player,
@@ -25,7 +26,11 @@ beforeEach(async () => {
 
 test("gatherDefenseIntel reveals defenses", () => {
   target.buildUnit(UnitType.DefensePost, game.ref(1, 1), {});
-  const report = spyPlayer.gatherDefenseIntel(target);
+  spyPlayer.buildUnit(UnitType.Spy, game.ref(0, 0), {});
+  game.addExecution(new GatherDefenseIntelExecution(spyPlayer, target.id()));
+  game.executeNextTick();
+  game.executeNextTick();
+  const report = spyPlayer.intelOn(target)!;
   expect(report.assets.length).toBe(1);
   expect(report.assets[0].type).toBe(UnitType.DefensePost);
 });

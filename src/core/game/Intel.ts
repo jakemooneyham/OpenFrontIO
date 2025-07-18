@@ -1,4 +1,5 @@
-import { TileRef, UnitType } from "./Game";
+import { UnitType } from "./Game";
+import { TileRef } from "./GameMap";
 
 export interface IntelAsset {
   tile: TileRef;

@@ -37,6 +37,7 @@ export type Intent =
   | DonateTroopsIntent
   | TargetTroopRatioIntent
   | BuildUnitIntent
+  | GatherDefenseIntelIntent
   | EmbargoIntent
   | QuickChatIntent
   | MoveWarshipIntent
@@ -61,6 +62,9 @@ export type TargetTroopRatioIntent = z.infer<
   typeof TargetTroopRatioIntentSchema
 >;
 export type BuildUnitIntent = z.infer<typeof BuildUnitIntentSchema>;
+export type GatherDefenseIntelIntent = z.infer<
+  typeof GatherDefenseIntelIntentSchema
+>;
 export type UpgradeStructureIntent = z.infer<
   typeof UpgradeStructureIntentSchema
 >;
@@ -324,6 +328,11 @@ export const BuildUnitIntentSchema = BaseIntentSchema.extend({
   y: z.number(),
 });
 
+export const GatherDefenseIntelIntentSchema = BaseIntentSchema.extend({
+  type: z.literal("gather_intel"),
+  target: ID,
+});
+
 export const UpgradeStructureIntentSchema = BaseIntentSchema.extend({
   type: z.literal("upgrade_structure"),
   unit: z.enum(UnitType),
@@ -374,6 +383,7 @@ const IntentSchema = z.discriminatedUnion("type", [
   DonateTroopIntentSchema,
   TargetTroopRatioIntentSchema,
   BuildUnitIntentSchema,
+  GatherDefenseIntelIntentSchema,
   UpgradeStructureIntentSchema,
   EmbargoIntentSchema,
   MoveWarshipIntentSchema,

@@ -127,6 +127,11 @@ export class PlayerImpl implements Player {
   }
 
   gatherDefenseIntel(target: Player): IntelReport {
+    const numIntelUnits =
+      this.unitCount(UnitType.Spy) + this.unitCount(UnitType.Satellite);
+    if (numIntelUnits === 0) {
+      throw new Error("No intel units available");
+    }
     const report = this.mg.defenseIntel(target);
     this.intelReports.set(target.id(), report);
     return report;
